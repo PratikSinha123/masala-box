@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masala Box | Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        .view-section { display: none; }
+        .view-section.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Masala Box</h3>
+                <span class="subtitle">Admin Dashboard</span>
+            </div>
+            
+            <ul class="nav-links">
+                <li class="nav-item active" data-target="dashboard-view">
+                    <a href="#">
+                        <span class="icon">📊</span>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item" data-target="orders-view">
+                    <a href="#">
+                        <span class="icon">📋</span>
+                        Orders
+                        <span class="badge" id="sideOrderCount">0</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-target="reservations-view">
+                    <a href="#">
+                        <span class="icon">📅</span>
+                        Reservations
+                        <span class="badge" id="sideResCount">0</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-target="menu-view">
+                    <a href="#">
+                        <span class="icon">🍽️</span>
+                        Menu
+                    </a>
+                </li>
+                <li class="nav-item" data-target="settings-view">
+                    <a href="#">
+                        <span class="icon">⚙️</span>
+                        Settings
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <a href="/">
+                    <span class="icon">🌐</span>
+                    View Customer Site
+                </a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="topbar">
+                <h2 id="topbar-title">Dashboard</h2>
+                <div class="topbar-actions">
+                    <div class="status-toggle">
+                        <span class="dot green-dot"></span>
+                        <span class="status-text">Cafe Open</span>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="live-indicator">
+                        <span class="dot small-green-dot"></span> Live
+                    </div>
+                    <button class="btn-refresh" id="refreshBtn">
+                        <span class="icon">🔄</span> Refresh
+                    </button>
+                </div>
+            </header>
+
+            <!-- VIEW: DASHBOARD -->
+            <div id="dashboard-view" class="view-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="card-icon">📋</div>
+                        <h3 id="statOrders">0</h3>
+                        <p>Active Orders</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="card-icon">📅</div>
+                        <h3 id="statReservations">0</h3>
+                        <p>Today's Reservations</p>
+                    </div>
+                    <div class="stat-card">
+                        <div class="card-icon">💰</div>
+                        <h3 id="statRevenue">₹0</h3>
+                        <p>Today's Revenue</p>
+                    </div>
+                </div>
+
+                <div class="data-section">
+                    <div class="section-header">
+                        <h3>Recent Orders</h3>
+                        <button class="btn-view" onclick="switchTab('orders-view')">View All &rarr;</button>
+                    </div>
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ORDER ID</th>
+                                <th>CUSTOMER</th>
+                                <th>ITEMS</th>
+                                <th>TOTAL</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashOrdersBody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-section" style="margin-top: 2rem;">
+                    <div class="section-header">
+                        <h3>Upcoming Reservations</h3>
+                        <button class="btn-view" onclick="switchTab('reservations-view')">View All &rarr;</button>
+                    </div>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>NAME</th>
+                                <th>DATE & TIME</th>
+                                <th>GUESTS</th>
+                                <th>PHONE</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashReservationsBody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VIEW: ORDERS -->
+            <div id="orders-view" class="view-section">
+                <div class="data-section">
+                    <div class="section-header">
+                        <h3>All Orders</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ORDER ID</th>
+                                <th>CUSTOMER</th>
+                                <th>ITEMS</th>
+                                <th>TOTAL</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fullOrdersBody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VIEW: RESERVATIONS -->
+            <div id="reservations-view" class="view-section">
+                <div class="data-section">
+                    <div class="section-header">
+                        <h3>All Reservations</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>NAME</th>
+                                <th>DATE & TIME</th>
+                                <th>GUESTS</th>
+                                <th>PHONE</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fullReservationsBody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VIEW: MENU -->
+            <div id="menu-view" class="view-section">
+                <!-- Add New Item -->
+                <div class="data-section" style="margin-bottom: 2rem;">
+                    <div class="section-header">
+                        <h3>Add New Menu Item</h3>
+                    </div>
+                    <form id="addMenuItemForm" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+                        <div style="flex: 1 1 200px;">
+                            <label style="color: #a39c98; font-size: 0.85rem; margin-bottom: 0.3rem; display: block;">Item Name</label>
+                            <input type="text" id="newItemName" required style="width: 100%; padding: 0.8rem; background: #2a2522; border: 1px solid #48413c; color: #fff; border-radius: 4px;">
+                        </div>
+                        <div style="flex: 1 1 150px;">
+                            <label style="color: #a39c98; font-size: 0.85rem; margin-bottom: 0.3rem; display: block;">Category</label>
+                            <select id="newItemCat" style="width: 100%; padding: 0.8rem; background: #2a2522; border: 1px solid #48413c; color: #fff; border-radius: 4px;">
+                                <option>Starters</option>
+                                <option>Mains</option>
+                                <option>Breads & Rice</option>
+                            </select>
+                        </div>
+                        <div style="flex: 1 1 100px;">
+                            <label style="color: #a39c98; font-size: 0.85rem; margin-bottom: 0.3rem; display: block;">Price (₹)</label>
+                            <input type="number" id="newItemPrice" required style="width: 100%; padding: 0.8rem; background: #2a2522; border: 1px solid #48413c; color: #fff; border-radius: 4px;">
+                        </div>
+                        <div style="flex: 2 1 300px;">
+                            <label style="color: #a39c98; font-size: 0.85rem; margin-bottom: 0.3rem; display: block;">Description</label>
+                            <input type="text" id="newItemDesc" required style="width: 100%; padding: 0.8rem; background: #2a2522; border: 1px solid #48413c; color: #fff; border-radius: 4px;">
+                        </div>
+                        <button type="submit" style="padding: 0.8rem 1.5rem; background: var(--primary); color: #fff; border: none; border-radius: 4px; font-weight: 600; cursor: pointer;">Add Item</button>
+                    </form>
+                </div>
+
+                <!-- Existing Menu -->
+                <div class="data-section">
+                    <div class="section-header">
+                        <h3>Menu Management</h3>
+                    </div>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>NAME</th>
+                                <th>CATEGORY</th>
+                                <th>PRICE (₹)</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fullMenuBody">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VIEW: SETTINGS -->
+            <div id="settings-view" class="view-section">
+                <div class="data-section">
+                    <div class="section-header">
+                        <h3>System Configuration</h3>
+                    </div>
+                    <form id="settingsForm" style="display: flex; flex-direction: column; gap: 1.5rem; max-width: 600px;">
+                        <div>
+                            <label style="color: #a39c98; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;">Delivery Fee (₹)</label>
+                            <input type="number" id="setDeliveryFee" required style="width: 100%; padding: 0.8rem; background: #2a2522; border: 1px solid #48413c; color: #fff; border-radius: 4px; font-size: 1.1rem;">
+                        </div>
+                        <div>
+                            <label style="color: #a39c98; font-size: 0.9rem; margin-bottom: 0.5rem; display: block;">Automatic Site Banner Warning / Announcement</label>
+                            <textarea id="setBannerText" rows="3" style="width: 100%; padding: 0.8rem; background: #2a2522; border: 1px solid #48413c; color: #fff; border-radius: 4px; font-size: 1rem; resize: vertical;" placeholder="E.g., Closed for renovations tomorrow!"></textarea>
+                            <small style="color: #666; display: block; margin-top: 0.3rem;">This banner will immediately activate across the live frontend.</small>
+                        </div>
+                        <button type="submit" style="padding: 1rem; background: var(--primary); color: #fff; border: none; border-radius: 4px; font-weight: 600; font-size: 1.1rem; cursor: pointer; align-self: flex-start;">Save Configuration</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Toast Notification -->
+            <div id="toast" class="toast">
+                <span class="icon">🔔</span>
+                <span id="toastMsg">Live Sync Active</span>
+            </div>
+        </main>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

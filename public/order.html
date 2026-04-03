@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Online - Masala Box Cafe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: linear-gradient(135deg, #FDFBF8 0%, #E6DFD5 100%); margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+        header { background: transparent; padding: 1.5rem 5%; z-index: 10; position: relative; border-bottom: 1px solid rgba(197, 168, 128, 0.2); }
+        header a.logo { color: #4A3B32; }
+        header nav a { color: #4A3B32; font-weight: 700; transition: color 0.3s; }
+        header nav a:hover { color: #C5A880; }
+        
+        .order-page-layout { flex: 1; padding: 2rem 5%; max-width: 1600px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 2.5fr 1fr; gap: 3rem; }
+        
+        .pill { background: #FDFBF8; border: 1px solid #C5A880; padding: 0.8rem 2rem; border-radius: 30px; color: #7A695C; font-weight: 600; font-size: 1.1rem; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .pill.active { background: #4A3B32; border: 1px solid #4A3B32; color: #FDFBF8; display: flex; align-items: center; gap: 0.5rem; }
+        
+        .service-pill { flex: 1; padding: 1rem; background: #fff; border: 2px solid #eee; border-radius: 8px; font-weight: 600; color: #666; cursor: pointer; transition: all 0.2s; font-size: 1.05rem; display: flex; justify-content: center; align-items: center; gap: 0.5rem; outline: none; }
+        .service-pill.active { border-color: var(--primary); background: #ffeee6; color: var(--primary); box-shadow: 0 4px 15px rgba(207, 155, 91, 0.15); }
+        
+        #interactiveMenuGrid::-webkit-scrollbar { width: 8px; }
+        #interactiveMenuGrid::-webkit-scrollbar-thumb { background: #C5A880; border-radius: 4px; }
+        
+        .menu-item-card { background: #FFFFFF; padding: 1.5rem; border-radius: 12px; border: 1px solid #E8E0D5; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 15px rgba(74, 59, 50, 0.05); }
+        .menu-item-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(74, 59, 50, 0.1); border-color: #C5A880; }
+        .menu-item-title { color: #4A3B32; font-size: 1.6rem; font-family: 'Cormorant Garamond', serif; margin-bottom: 0.5rem; font-weight: 700; }
+        .menu-item-desc { color: #7A695C; font-size: 1rem; line-height: 1.5; margin-bottom: 1.5rem; }
+        
+        .cart-side-dark { background: #FDFBF8; padding: 2.5rem; border-radius: 16px; border: 1px solid #E8E0D5; display: flex; flex-direction: column; position: sticky; top: 20px; height: calc(100vh - 60px); box-shadow: 0 10px 30px rgba(74, 59, 50, 0.05); }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; background: #FFFFFF; padding: 1.2rem; border-radius: 10px; margin-bottom: 0.8rem; border: 1px solid #E8E0D5; color: #4A3B32;}
+        .remove-btn { color: #8E6A4B; background: none; border: none; cursor: pointer; font-size: 1.4rem; transition: transform 0.2s; }
+        .remove-btn:hover { transform: scale(1.2); color: #4A3B32; }
+        
+        #toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: #4A3B32; color: #FDFBF8; padding: 1rem 2rem; border-radius: 8px; font-weight: 500; z-index: 10000; transition: bottom 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); box-shadow: 0 10px 30px rgba(74, 59, 50, 0.2); display: flex; align-items: center; gap: 1rem; border: 1px solid #C5A880; }
+        #toast.show { bottom: 30px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">Masala<span>Box</span></a>
+        <nav>
+            <a href="index.html">Back to Home</a>
+        </nav>
+    </header>
+
+    <div class="order-page-layout">
+        <!-- Left Side: Large Menu Selection -->
+        <div class="menu-list-side" style="padding-top: 1rem;">
+            <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; color: var(--secondary); margin-bottom: 1.5rem;">Explore Our Menu</h1>
+            
+            <div class="filter-pills" style="margin-bottom: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="pill active" onclick="filterMenu('All')"><span>🍽️</span> All Dishes</button>
+                <button class="pill" onclick="filterMenu('Starters')">Starters</button>
+                <button class="pill" onclick="filterMenu('Mains')">Mains</button>
+                <button class="pill" onclick="filterMenu('Breads & Rice')">Breads & Rice</button>
+            </div>
+
+            <div class="search-bar" style="position: relative; margin-bottom: 3rem;">
+                <span style="position: absolute; left: 1.5rem; top: 50%; transform: translateY(-50%); color: #888; font-size: 1.5rem;">🔍</span>
+                <input type="text" id="menuSearch" placeholder="Search for your favorite dish..." style="width: 100%; padding: 1.5rem 1.5rem 1.5rem 4rem; background: #fff; border: 1px solid #ddd; border-radius: 30px; color: #333; font-size: 1.2rem; outline: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);">
+            </div>
+
+            <!-- Large Menu Items Grid -->
+            <div id="interactiveMenuGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-height: calc(100vh - 350px); overflow-y: auto; padding-right: 1.5rem; padding-bottom: 2rem;">
+                <!-- Filled by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Right Side: Large Fixed Cart -->
+        <div class="cart-side-dark">
+            <h2 style="color: #4A3B32; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; font-family: 'Cormorant Garamond', serif; font-size: 2.2rem;">
+                <span>🛒</span> Your Order
+            </h2>
+            
+            <div id="cartItemsContainer" style="flex-grow: 1; overflow-y: auto; margin-bottom: 2rem; padding-right: 1rem;">
+                <!-- Empty state default -->
+                <div id="emptyCartMessage" class="empty-cart" style="text-align: center; color: #7A695C; margin-top: 5rem;">
+                    <span style="font-size: 5rem; display: block; margin-bottom: 1.5rem; opacity: 0.3;">🍽️</span>
+                    <p style="font-size: 1.4rem; margin-bottom: 0.5rem; color: #aaa;">Your cart is empty.</p>
+                    <p style="font-size: 1.1rem;">Click items on the left to add!</p>
+                </div>
+            </div>
+
+            <div id="cartSummary" style="display: none; border-top: 2px solid #E8E0D5; padding-top: 2rem; margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; color: #4A3B32; font-weight: 700; font-size: 1.6rem;">
+                    <span>Total Amount:</span>
+                    <span id="cartTotalVal" style="color: #C5A880;">₹0</span>
+                </div>
+            </div>
+
+            <button id="btnCheckout" onclick="openCheckout()" style="width: 100%; padding: 1.5rem; background: #cf9b5b; border: none; border-radius: 12px; font-weight: 700; color: #1F1A17; font-size: 1.3rem; cursor: not-allowed; transition: all 0.3s; opacity: 0.5; text-transform: uppercase; letter-spacing: 1px;" disabled>Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkoutModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+        <div style="background: #fff; padding: 3rem; border-radius: 16px; width: 90%; max-width: 550px; box-shadow: 0 25px 50px rgba(0,0,0,0.4);">
+            <div style="text-align: center; margin-bottom: 2.5rem;">
+                <h2 style="color: var(--secondary); margin-bottom: 0.5rem; font-family: 'Playfair Display', serif; font-size: 2.5rem;">Complete Order</h2>
+                <p style="color: #666; font-size: 1.1rem;">Please provide your details below.</p>
+            </div>
+            
+            <form id="checkoutForm">
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label style="display:block; margin-bottom: 0.8rem; font-weight: 600; color: #444; font-size: 1.1rem;">Service Type</label>
+                    <div style="display: flex; gap: 1rem;">
+                        <input type="hidden" id="coType" value="Delivery">
+                        <button type="button" class="service-pill active" onclick="setServiceType('Delivery')" id="btnDelivery">🛵 Delivery</button>
+                        <button type="button" class="service-pill" onclick="setServiceType('Pickup')" id="btnPickup">🏬 Pickup</button>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="display:block; margin-bottom: 0.8rem; font-weight: 600; color: #444; font-size: 1.1rem;">Full Name</label>
+                    <input type="text" id="coName" required placeholder="John Doe" style="width: 100%; padding: 1.2rem; border: 2px solid #eee; border-radius: 8px; font-size: 1.1rem; background: #fafafa; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#eee'">
+                </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="display:block; margin-bottom: 0.8rem; font-weight: 600; color: #444; font-size: 1.1rem;">Phone Number</label>
+                    <input type="tel" id="coPhone" required pattern="[0-9]{10}" maxlength="10" placeholder="e.g. 9876543210" style="width: 100%; padding: 1.2rem; border: 2px solid #eee; border-radius: 8px; font-size: 1.1rem; background: #fafafa; outline: none; transition: border-color 0.3s;" title="Please enter exactly 10 digits" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#eee'">
+                </div>
+                <div class="form-group" id="coAddressGroup" style="margin-bottom: 2rem;">
+                    <label style="display:block; margin-bottom: 0.8rem; font-weight: 600; color: #444; font-size: 1.1rem;">Delivery Address</label>
+                    <input type="text" id="coAddress" placeholder="123 Main Street..." style="width: 100%; padding: 1.2rem; border: 2px solid #eee; border-radius: 8px; font-size: 1.1rem; background: #fafafa; outline: none; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--primary)'" onblur="this.style.borderColor='#eee'">
+                </div>
+                
+                <!-- Bill Summary Panel -->
+                <div style="margin-bottom: 2rem; background: #fafafa; border: 1px solid #eee; border-radius: 12px; padding: 1.5rem;">
+                    <h3 style="font-size: 1.1rem; color: #444; margin-bottom: 1rem; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; font-weight: 600;">Bill Summary</h3>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.8rem; color: #666; font-size: 1.05rem;">
+                        <span>Items Subtotal:</span>
+                        <span id="coSubtotalVal">₹0</span>
+                    </div>
+                    <div id="coDeliveryRow" style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: #666; font-size: 1.05rem;">
+                        <span>Delivery Fee:</span>
+                        <span id="coDeliveryFeeVal">₹0</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.3rem; color: #cf9b5b; border-top: 1px dashed #ddd; padding-top: 1rem;">
+                        <span>Final Total:</span>
+                        <span id="coFinalTotalVal">₹0</span>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1.5rem;">
+                    <button type="button" onclick="closeCheckout()" style="flex: 1; padding: 1.2rem; background: #f3f4f6; border: none; border-radius: 8px; font-weight: 600; font-size: 1.1rem; color: #4b5563; cursor: pointer; transition: background 0.2s;">Go Back</button>
+                    <button type="submit" style="flex: 1; padding: 1.2rem; background: var(--primary); border: none; border-radius: 8px; font-weight: 600; font-size: 1.1rem; color: #fff; cursor: pointer; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(225, 48, 108, 0.3);" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Confirm Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast">
+        <span id="toastMsg"></span>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/order.js"></script>
+</body>
+</html>

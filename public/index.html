@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Masala Box by Alishan Foods - Elegant Indian Dining & Fast Delivery in Pathankot">
+    <title>Masala Box by Alishan Foods | Authentic Indian Dining</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Live Announcement Banner -->
+    <div id="liveBanner" style="display: none; position: absolute; top: 0; left: 0; width: 100%; z-index: 1001; background: var(--primary); color: #fff; text-align: center; padding: 0.8rem; font-weight: 600; font-size: 0.95rem; letter-spacing: 1px; box-sizing: border-box;"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = io();
+            const banner = document.getElementById('liveBanner');
+
+            function updateBanner(text) {
+                if (text && text.trim() !== "") {
+                    banner.innerText = text;
+                    banner.style.display = 'block';
+                    document.querySelector('header').style.top = banner.offsetHeight + 'px';
+                } else {
+                    banner.style.display = 'none';
+                    document.querySelector('header').style.top = '0px';
+                }
+            }
+
+            // Fetch initial
+            fetch('/api/settings').then(r => r.json()).then(s => updateBanner(s.bannerText));
+
+            // Listen for live changes natively!
+            socket.on('settingsUpdated', (settings) => {
+                updateBanner(settings.bannerText);
+            });
+            
+            // Adjust on window resize
+            window.addEventListener('resize', () => {
+                if(banner.style.display === 'block') {
+                    document.querySelector('header').style.top = banner.offsetHeight + 'px';
+                }
+            });
+        });
+    </script>
+
+    <header>
+        <a href="#" class="logo">Masala<span>Box</span></a>
+        <nav>
+            <a href="#about">About</a>
+            <a href="order.html">Order Online</a>
+            <a href="#reserve">Reservations</a>
+            <a href="#contact">Contact</a>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>A Celebration of Authentic Indian Flavors</h1>
+            <p>"Where tradition meets innovation in every bite."</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <a href="#reserve" class="btn">Book a Table</a>
+                <a href="order.html" class="btn" style="background: transparent; border: 2px solid var(--primary); color: #fff;">Order Online</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSTAGRAM LIVE SCROLLER SECTION -->
+    <section id="instagram-feed" style="background: #fafafa; padding: 4rem 0; overflow: hidden; position: relative;">
+        <div style="text-align: center; margin-bottom: 2.5rem;">
+            <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: var(--secondary); margin-bottom: 0.5rem;">Live from Instagram</h2>
+            <p style="font-size: 1.1rem; color: #666;">Follow us <a href="https://www.instagram.com/masalaboxindia/" target="_blank" style="color: #E1306C; font-weight: bold; text-decoration: none;">@masalaboxindia</a></p>
+        </div>
+
+        <style>
+            .insta-scroller-wrapper {
+                width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                position: relative;
+            }
+            .insta-scroller-container {
+                display: inline-flex;
+                /* Fast scroll/refresh rate calculation */
+                animation: scrollInsta 15s linear infinite; 
+            }
+            .insta-scroller-container:hover {
+                animation-play-state: paused;
+            }
+            @keyframes scrollInsta {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+            }
+            .insta-post {
+                width: 300px;
+                height: 300px;
+                margin: 0 1rem;
+                border-radius: 12px;
+                overflow: hidden;
+                position: relative;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                flex-shrink: 0;
+                display: block;
+            }
+            .insta-post img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform 0.4s ease;
+            }
+            .insta-post:hover img {
+                transform: scale(1.1);
+            }
+            .insta-overlay {
+                position: absolute;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .insta-post:hover .insta-overlay {
+                opacity: 1;
+            }
+            .insta-icon {
+                color: #fff;
+                font-size: 2.5rem;
+            }
+        </style>
+
+        <div class="insta-scroller-wrapper">
+            <div class="insta-scroller-container">
+                <!-- Set 1 -->
+                <a href="https://www.instagram.com/masalaboxindia/" target="_blank" class="insta-post"><img src="https://instagram.fdel27-9.fna.fbcdn.net/v/t15.5256-10/561597560_1328700742087546_1884025191016604915_n.jpg?stp=dst-jpg_e35_s1080x1080_sh0.08_tt6&amp;_nc_ht=instagram.fdel27-9.fna.fbcdn.net&amp;_nc_cat=110&amp;_nc_oc=Q6cZ2gGo8Y5eS_zdUw2wgJ-L2tp1sEIMpWl7Xq0T_sjvzEhSYFR4MBxIfhHxCRC_F8ZXlpyLji_W2VVd9lbvse6nLaZo&amp;_nc_ohc=VAyuilEbshwQ7kNvwH0iWNg&amp;_nc_gid=JnzmvFAspk-aS3eIs4qyMQ&amp;edm=AOQ1c0wAAAAA&amp;ccb=7-5&amp;oh=00_Af2McZhjmXhQrP0-4HhggFyI11mgI9sp2I7o_81d5Zuwjg&amp;oe=69D4C3CB&amp;_nc_sid=8b3546" alt="Instagram Post"><div class="insta-overlay"><span class="insta-icon">🤍</span></div></a>
+                <a href="https://www.instagram.com/masalaboxindia/" target="_blank" class="insta-post"><img src="https://instagram.fdel27-1.fna.fbcdn.net/v/t15.5256-10/558925131_820480377066153_3740097666168658826_n.jpg?stp=dst-jpg_e15_fr_s1080x1080_tt6&amp;_nc_ht=instagram.fdel27-1.fna.fbcdn.net&amp;_nc_cat=109&amp;_nc_oc=Q6cZ2gGo8Y5eS_zdUw2wgJ-L2tp1sEIMpWl7Xq0T_sjvzEhSYFR4MBxIfhHxCRC_F8ZXlpyLji_W2VVd9lbvse6nLaZo&amp;_nc_ohc=xGd8xJoIgJEQ7kNvwFnQIsv&amp;_nc_gid=JnzmvFAspk-aS3eIs4qyMQ&amp;edm=AOQ1c0wAAAAA&amp;ccb=7-5&amp;oh=00_Af2P-Y_2FBrvO3A0J4mC03hvBYfgD7D5bJi-HD2enUmyJQ&amp;oe=69D4B9F0&amp;_nc_sid=8b3546" alt="Instagram Post"><div class="insta-overlay"><span class="insta-icon">🤍</span></div></a>
+                <a href="https://www.instagram.com/masalaboxindia/" target="_blank" class="insta-post"><img src="https://instagram.fdel27-5.fna.fbcdn.net/v/t15.5256-10/561281241_1443348790107703_2398575787617819597_n.jpg?stp=dst-jpg_e15_fr_s1080x1080_tt6&amp;_nc_ht=instagram.fdel27-5.fna.fbcdn.net&amp;_nc_cat=107&amp;_nc_oc=Q6cZ2gGo8Y5eS_zdUw2wgJ-L2tp1sEIMpWl7Xq0T_sjvzEhSYFR4MBxIfhHxCRC_F8ZXlpyLji_W2VVd9lbvse6nLaZo&amp;_nc_ohc=Qo4eg6LyPNMQ7kNvwEBrQkb&amp;_nc_gid=JnzmvFAspk-aS3eIs4qyMQ&amp;edm=AOQ1c0wAAAAA&amp;ccb=7-5&amp;oh=00_Af2LM7pBfXfGmcWXkU25lApNEpeNEZmZ04LhIsiFTeiHtQ&amp;oe=69D4D1D5&amp;_nc_sid=8b3546" alt="Instagram Post"><div class="insta-overlay"><span class="insta-icon">🤍</span></div></a>
+                <a href="https://www.instagram.com/masalaboxindia/" target="_blank" class="insta-post"><img src="https://instagram.fdel27-4.fna.fbcdn.net/v/t15.5256-10/566358251_1516403642728356_731115415106133739_n.jpg?stp=dst-jpg_e15_tt6&amp;_nc_ht=instagram.fdel27-4.fna.fbcdn.net&amp;_nc_cat=100&amp;_nc_oc=Q6cZ2gGo8Y5eS_zdUw2wgJ-L2tp1sEIMpWl7Xq0T_sjvzEhSYFR4MBxIfhHxCRC_F8ZXlpyLji_W2VVd9lbvse6nLaZo&amp;_nc_ohc=R-RavutlgPwQ7kNvwHKEZlA&amp;_nc_gid=JnzmvFAspk-aS3eIs4qyMQ&amp;edm=AOQ1c0wAAAAA&amp;ccb=7-5&amp;oh=00_Af37rn98QUQD7bSdLO_SRaODlI2EmS9E7JQtA9kGXcP1rw&amp;oe=69D4C6A9&amp;_nc_sid=8b3546" alt="Instagram Post"><div class="insta-overlay"><span class="insta-icon">🤍</span></div></a>
+                
+                <!-- Set 2 (Duplicate for infinite seamless loop) -->
+                <a href="https://www.instagram.com/masalaboxindia/" target="_blank" class="insta-post"><img src="https://instagram.fdel27-9.fna.fbcdn.net/v/t15.5256-10/561597560_1328700742087546_1884025191016604915_n.jpg?stp=dst-jpg_e35_s1080x1080_sh0.08_tt6&amp;_nc_ht=instagram.fdel27-9.fna.fbcdn.net&amp;_nc_cat=110&amp;_nc_oc=Q6cZ2gGo8Y5eS_zdUw2wgJ-L2tp1sEIMpWl7Xq0T_sjvzEhSYFR4MBxIfhHxCRC_F8ZXlpyLji_W2VVd9lbvse6nLaZo&amp;_nc_ohc=VAyuilEbshwQ7kNvwH0iWNg&amp;_nc_gid=JnzmvFAspk-aS3eIs4qyMQ&amp;edm=AOQ1c0wAAAAA&amp;ccb=7-5&amp;oh=00_Af2McZhjmXhQrP0-4HhggFyI11mgI9sp2I7o_81d5Zuwjg&amp;oe=69D4C3CB&amp;_nc_sid=8b3546" alt="Instagram Post"><div class="insta-overlay"><span class="insta-icon">🤍</span></div></a>
+                <a href="https://www.instagram.com/masalaboxindia/" target="_blank" class="insta-post"><img src="https://instagram.fdel27-1.fna.fbcdn.net/v/t15.5256-10/558925131_820480377066153_3740097666168658826_n.jpg?stp=dst-jpg_e15_fr_s1080x1080_tt6&amp;_nc_ht=instagram.fdel27-1.fna.fbcdn.net&amp;_nc_cat=109&amp;_nc_oc=Q6cZ2gGo8Y5eS_zdUw2wgJ-L2tp1sEIMpWl7Xq0T_sjvzEhSYFR4MBxIfhHxCRC_F8ZXlpyLji_W2VVd9lbvse6nLaZo&amp;_nc_ohc=xGd8xJoIgJEQ7kNvwFnQIsv&amp;_nc_gid=JnzmvFAspk-aS3eIs4qyMQ&amp;edm=AOQ1c0wAAAAA&amp;ccb=7-5&amp;oh=00_Af2P-Y_2FBrvO3A0J4mC03hvBYfgD7D5bJi-HD2enUmyJQ&amp;oe=69D4B9F0&amp;_nc_sid=8b3546" alt="Instagram Post"><div class="insta-overlay"><span class="insta-icon">🤍</span></div></a>
+                <a href="https://www.instagram.com/masalaboxindia/" target="_blank" class="insta-post"><img src="https://instagram.fdel27-5.fna.fbcdn.net/v/t15.5256-10/561281241_1443348790107703_2398575787617819597_n.jpg?stp=dst-jpg_e15_fr_s1080x1080_tt6&amp;_nc_ht=instagram.fdel27-5.fna.fbcdn.net&amp;_nc_cat=107&amp;_nc_oc=Q6cZ2gGo8Y5eS_zdUw2wgJ-L2tp1sEIMpWl7Xq0T_sjvzEhSYFR4MBxIfhHxCRC_F8ZXlpyLji_W2VVd9lbvse6nLaZo&amp;_nc_ohc=Qo4eg6LyPNMQ7kNvwEBrQkb&amp;_nc_gid=JnzmvFAspk-aS3eIs4qyMQ&amp;edm=AOQ1c0wAAAAA&amp;ccb=7-5&amp;oh=00_Af2LM7pBfXfGmcWXkU25lApNEpeNEZmZ04LhIsiFTeiHtQ&amp;oe=69D4D1D5&amp;_nc_sid=8b3546" alt="Instagram Post"><div class="insta-overlay"><span class="insta-icon">🤍</span></div></a>
+                <a href="https://www.instagram.com/masalaboxindia/" target="_blank" class="insta-post"><img src="https://instagram.fdel27-4.fna.fbcdn.net/v/t15.5256-10/566358251_1516403642728356_731115415106133739_n.jpg?stp=dst-jpg_e15_tt6&amp;_nc_ht=instagram.fdel27-4.fna.fbcdn.net&amp;_nc_cat=100&amp;_nc_oc=Q6cZ2gGo8Y5eS_zdUw2wgJ-L2tp1sEIMpWl7Xq0T_sjvzEhSYFR4MBxIfhHxCRC_F8ZXlpyLji_W2VVd9lbvse6nLaZo&amp;_nc_ohc=R-RavutlgPwQ7kNvwHKEZlA&amp;_nc_gid=JnzmvFAspk-aS3eIs4qyMQ&amp;edm=AOQ1c0wAAAAA&amp;ccb=7-5&amp;oh=00_Af37rn98QUQD7bSdLO_SRaODlI2EmS9E7JQtA9kGXcP1rw&amp;oe=69D4C6A9&amp;_nc_sid=8b3546" alt="Instagram Post"><div class="insta-overlay"><span class="insta-icon">🤍</span></div></a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="bg-gray">
+        <div class="container">
+            <div class="about-text">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Welcome to Masala Box</h2>
+                <h4 style="margin-bottom: 2rem; color: var(--primary);">By Alishan Foods</h4>
+                <p>Located in the vibrant heart of the city, Masala Box is a cherished culinary haven known for its commitment to exquisite taste and warm hospitality. Our bold exterior invites you into a world of vibrant colors and authentic aromas.</p>
+                <p>Whether you're craving our famous chatpata snacks or looking for a premium dining experience with your family, our vibrant interior—featuring modern wooded seating and rich cultural decors under the soft glow of geometric lighting—promises a meal you won't forget.</p>
+            </div>
+            <div class="about-image"></div>
+        </div>
+    </section>
+
+
+
+    <section id="services" class="bg-gray">
+        <h2 class="section-title">Experience Masala Box</h2>
+        <div class="container" style="grid-template-columns: 1fr; max-width: 800px; transform: scale(1.1); transform-origin: top center;">
+            
+            <!-- TABLE RESERVATION FORM -->
+            <div id="reserve" class="form-panel">
+                <h3>Reserve a Table</h3>
+                <p class="subtitle">Secure your spot for a premium dining experience. A Reservation confirmation CSV will be provided.</p>
+                <form id="reserveForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="resName">Full Name</label>
+                            <input type="text" id="resName" required placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="resEmail">Email Address</label>
+                            <input type="email" id="resEmail" required placeholder="email@address.com">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="resDate">Select Date</label>
+                            <input type="date" id="resDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="resTime">Select Time</label>
+                            <input type="time" id="resTime" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="resGuests">Number of Guests</label>
+                            <select id="resGuests" required>
+                                <option value="1">1 Guest</option>
+                                <option value="2">2 Guests</option>
+                                <option value="3">3 Guests</option>
+                                <option value="4">4 Guests</option>
+                                <option value="5">5 Guests</option>
+                                <option value="6+">6+ Guests - Party Booking</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="resPhone">Phone Number</label>
+                            <input type="tel" id="resPhone" required placeholder="+91 XXXXX XXXXX">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%; margin-top: 1rem;">Verify & Secure Booking</button>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER SECTION -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-col">
+                <a href="#" class="logo" style="color: #ffffff;">Masala<span>Box</span></a>
+                <p style="margin-top: 1rem;">A chatpata stopovers where tradition meets innovation. Authentic Indian dining experiences in a luxurious setting.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Info</h4>
+                <p><strong>Address:</strong> Dhangu Road, Pathankot</p>
+                <p><strong>Phone:</strong> +91 98765 43210</p>
+                <p><strong>Email:</strong> contact@masalabox.com</p>
+            </div>
+            <div class="footer-col">
+                <h4>Opening Hours</h4>
+                <p><strong>Mon - Fri:</strong> 11:00 AM - 11:00 PM</p>
+                <p><strong>Sat - Sun:</strong> 10:00 AM - 12:00 AM (Midnight)</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Masala Box by Alishan Foods. All rights reserved. Designed for excellence.
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toastMsg" style="display:flex; align-items:center; gap: 10px;">Action Successful</span>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
