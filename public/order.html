@@ -39,6 +39,10 @@
 
         /* ===== ORDER PAGE MOBILE ===== */
         @media (max-width: 768px) {
+            #mobileCartBtn {
+                display: inline-block !important;
+            }
+
             .order-page-layout {
                 grid-template-columns: 1fr;
                 gap: 1.5rem;
@@ -124,11 +128,12 @@
         <div class="menu-list-side" style="padding-top: 1rem;">
             <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 3.5rem; color: var(--secondary); margin-bottom: 1.5rem;">Explore Our Menu</h1>
             
-            <div class="filter-pills" style="margin-bottom: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <div class="filter-pills" style="margin-bottom: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
                 <button class="pill active" onclick="filterMenu('All')"><span>🍽️</span> All Dishes</button>
                 <button class="pill" onclick="filterMenu('Starters')">Starters</button>
                 <button class="pill" onclick="filterMenu('Mains')">Mains</button>
                 <button class="pill" onclick="filterMenu('Breads & Rice')">Breads & Rice</button>
+                <button id="mobileCartBtn" class="pill" onclick="scrollToCart()" style="background: var(--primary); color: white; border-color: var(--primary); margin-left: auto; display: none;">🛒 View Cart (<span id="cartCountMobile">0</span>)</button>
             </div>
 
             <div class="search-bar" style="position: relative; margin-bottom: 3rem;">
@@ -143,7 +148,7 @@
         </div>
 
         <!-- Right Side: Large Fixed Cart -->
-        <div class="cart-side-dark">
+        <div id="cartSection" class="cart-side-dark" style="scroll-margin-top: 100px;">
             <h2 style="color: #4A3B32; margin-bottom: 2rem; display: flex; align-items: center; gap: 1rem; font-family: 'Cormorant Garamond', serif; font-size: 2.2rem;">
                 <span>🛒</span> Your Order
             </h2>

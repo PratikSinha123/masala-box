@@ -189,6 +189,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderCart() {
+        const mobileCountBtn = document.getElementById('cartCountMobile');
+        if (mobileCountBtn) mobileCountBtn.innerText = cart.length;
+
         if (cart.length === 0) {
             cartContainer.innerHTML = '';
             cartContainer.appendChild(emptyCartMsg);
@@ -250,6 +253,13 @@ document.addEventListener('DOMContentLoaded', () => {
             toastTimer = setTimeout(() => {
                 toast.classList.remove('show');
             }, 10000);
+        }
+    }
+
+    window.scrollToCart = function() {
+        const cartSec = document.getElementById('cartSection');
+        if (cartSec) {
+            cartSec.scrollIntoView({ behavior: 'smooth' });
         }
     }
 });
