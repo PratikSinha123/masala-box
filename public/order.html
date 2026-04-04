@@ -36,6 +36,78 @@
         
         #toast { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: #4A3B32; color: #FDFBF8; padding: 1rem 2rem; border-radius: 8px; font-weight: 500; z-index: 10000; transition: bottom 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); box-shadow: 0 10px 30px rgba(74, 59, 50, 0.2); display: flex; align-items: center; gap: 1rem; border: 1px solid #C5A880; }
         #toast.show { bottom: 30px; }
+
+        /* ===== ORDER PAGE MOBILE ===== */
+        @media (max-width: 768px) {
+            .order-page-layout {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1rem 4%;
+            }
+
+            .cart-side-dark {
+                position: relative;
+                top: auto;
+                height: auto;
+                max-height: none;
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+
+            .pill {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+
+            .menu-item-card {
+                padding: 1.2rem;
+            }
+
+            .menu-item-title {
+                font-size: 1.3rem;
+            }
+
+            .menu-item-desc {
+                font-size: 0.9rem;
+            }
+
+            #interactiveMenuGrid {
+                max-height: none !important;
+                overflow-y: visible !important;
+                padding-right: 0 !important;
+                grid-template-columns: 1fr !important;
+            }
+
+            #checkoutModal > div {
+                width: 95% !important;
+                padding: 2rem 1.5rem !important;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            header {
+                padding: 1rem 4%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .order-page-layout {
+                padding: 0.8rem 3%;
+            }
+
+            .pill {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .menu-item-title {
+                font-size: 1.15rem;
+            }
+
+            .cart-side-dark {
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
 <body>

@@ -47,13 +47,35 @@
 
     <header>
         <a href="#" class="logo">Masala<span>Box</span></a>
-        <nav>
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Toggle navigation">
+            <span></span><span></span><span></span>
+        </button>
+        <nav id="mainNav">
             <a href="#about">About</a>
             <a href="order.html">Order Online</a>
             <a href="#reserve">Reservations</a>
             <a href="#contact">Contact</a>
         </nav>
+        <div class="nav-overlay" id="navOverlay" onclick="toggleMobileNav()"></div>
     </header>
+
+    <script>
+        function toggleMobileNav() {
+            const nav = document.getElementById('mainNav');
+            const btn = document.getElementById('hamburgerBtn');
+            const overlay = document.getElementById('navOverlay');
+            nav.classList.toggle('open');
+            btn.classList.toggle('active');
+            overlay.classList.toggle('open');
+        }
+        // Close menu when a nav link is clicked
+        document.querySelectorAll('#mainNav a').forEach(link => {
+            link.addEventListener('click', () => {
+                const nav = document.getElementById('mainNav');
+                if (nav.classList.contains('open')) toggleMobileNav();
+            });
+        });
+    </script>
 
     <section id="home" class="hero">
         <div class="hero-content">
