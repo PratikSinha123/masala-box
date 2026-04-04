@@ -64,20 +64,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
-    fetch('/api/data')
-        .then(res => res.json())
-        .then(data => {
-            orders = data.orders || [];
-            reservations = data.reservations || [];
-            menu = data.menu || [];
-            settings = data.settings || {};
-            
-            renderOrders();
-            renderReservations();
-            renderMenuTable();
-            renderSettings();
-        })
-        .catch(err => console.error("Data load error:", err));
+    function loadData() {
+        return fetch('/api/data')
+            .then(res => res.json())
+            .then(data => {
+                const newOrders = data.orders || [];
+                const newReservations = data.reservations || [];
+                const newMenu = data.menu || [];
+                const newSettings = data.settings || {};
+                
+                let didOrdersChange = JSON.stringify(orders) !== JSON.stringify(newOrders);
+                let didResChange = JSON.stringify(reservations) !== JSON.stringify(newReservations);
+                let didMenuChange = JSON.stringify(menu) !== JSON.stringify(newMenu);
+                let didSettingsChange = JSON.stringify(settings) !== JSON.stringify(newSettings);
+
+                orders = newOrders;
+                reservations = newReservations;
+                menu = newMenu;
+                settings = newSettings;
+                
+                if(didOrdersChange) renderOrders();
+                if(didResChange) renderReservations();
+                if(didMenuChange) renderMenuTable();
+                if(didSettingsChange) renderSettings();
+            })
+            .catch(err => console.error("Data load error:", err));
+    }
+
+    // Initial load
+    loadData();
+
+    // 2-second auto refresh loop (Vercel Fallback for Sockets)
+    setInterval(loadData, 2000);
 
     socket.on('newOrder', (order) => {
         orders.push(order);
